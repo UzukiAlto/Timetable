@@ -1,6 +1,10 @@
-
-# コンパイルされたバイトコード
+# django
+*.log
+*.pyc
 __pycache__/
+db-volumes/
+db.sqlite3
+# Python
 *.py[cod]
 *$py.class
 
