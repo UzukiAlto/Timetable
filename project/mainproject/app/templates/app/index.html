@@ -74,6 +74,7 @@
   </div>
 
   <div class="row custom-row-cols-7 g-3">
+    {% for class in classes %}
     <div class="col">
       <div class="card">
         <div class="card-body">カード 1</div>
@@ -81,7 +82,7 @@
     </div>
     <div class="col">
       <div class="card">
-        <div class="card-body">カード 2</div>
+        <div class="card-body">{{ class.class_name }}</div>
       </div>
     </div>
     <div class="col">
@@ -109,6 +110,7 @@
         <div class="card-body">カード 7</div>
       </div>
     </div>
+    {% endfor %}
   </div>
 </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="..." crossorigin="anonymous"></script>
