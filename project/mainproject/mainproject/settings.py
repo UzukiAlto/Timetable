@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "app.apps.AppConfig"
+    "app.apps.AppConfig",
+    "accounts.apps.AccountsConfig",
 ]
 
 MIDDLEWARE = [
@@ -132,3 +133,5 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
+LOGIN_REDIRECT_URL = '/'    #リダイレクト先＃
+LOGOUT_REDIRECT_URL = '/'
