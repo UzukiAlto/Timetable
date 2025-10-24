@@ -3,8 +3,8 @@ from django.conf import settings
 
 class Class(models.Model):
     class_name = models.CharField("授業名", max_length=100)
-    professor_name = models.CharField("教授名", max_length=100)
-    classroom_name = models.CharField("教室名", max_length=100)
+    professor_name = models.CharField("教授名", max_length=100, blank=True, null=True)
+    classroom_name = models.CharField("教室名", max_length=100, blank=True, null=True)
     
     day_of_the_week = models.IntegerField("曜日", choices=[
         (0, '月曜日'),
@@ -28,8 +28,8 @@ class Class(models.Model):
     attendance_count = models.IntegerField("出席回数", default=0)
     absence_count = models.IntegerField("欠席回数", default=0)
     total_late_and_early_leave_count = models.IntegerField("遅刻・早退回数", default=0)
-    belongings = models.TextField("持ち物", blank=True)
-    examination = models.TextField("試験日程", blank=True)
+    belongings = models.TextField("持ち物", blank=True, null=True)
+    examination = models.TextField("試験日程", blank=True, null=True)
     
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
