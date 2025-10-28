@@ -1,7 +1,14 @@
 const homeEditButton = document.getElementById('home-edit-button');
+let homeEditItems = document.querySelectorAll('.home-edit-display');
 
+let isEditing = document.body.dataset.isEditing === "true";
+if (isEditing) {
+    homeEditItems.forEach((item) => {
+        item.style.display = 'block';
+    });
+}
 const displayHomeEdit = () => {
-    let homeEditItems = document.querySelectorAll('.home-edit-display');
+    isEditing = !isEditing;
     homeEditItems.forEach((item) => {
         if (item.style.display === 'block') {
             item.style.display = 'none';
@@ -12,3 +19,5 @@ const displayHomeEdit = () => {
 };
 
 homeEditButton.addEventListener("click", displayHomeEdit);
+
+
