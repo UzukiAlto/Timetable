@@ -5,6 +5,7 @@ from .forms import ClassForm
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.contrib import messages
+from django.urls import reverse
 
 def get_class_context():
     context = {}
@@ -54,26 +55,36 @@ def get_class_context():
 
 def index(request):
     context = get_class_context()
+    if 'edit_mode' in request.GET and request.GET['edit_mode'] == 'on':
+        context['is_editing'] = True
     return render(request, "app/index.html", context=context)
 
 @login_required
-def home_edit(request):
+def home_edit(request, id_day_of_week, id_period):
     context = get_class_context()
     
     if request.method == "POST":
         form = ClassForm(request.POST)
+        
         if form.is_valid():
             class_form = form.save(commit=False)
             class_form.author = request.user
             class_form.save()
-            context.clear()
+            # context.clear()
             
-            context = get_class_context()
-            context["form"] = ClassForm()
-            return redirect('index')
+            # context = get_class_context()
+            # context["form"] = ClassForm()
+            # context["is_editing"] = True
+            return redirect(reverse('index') + '?edit_mode=on')
+        
         return render(request, "app/home-edit.html", {"form": ClassForm()}, context=context)
+    
     elif request.method == "GET":
-        form = ClassForm()
+        initial_data = {
+            "day_of_the_week": id_day_of_week - 1,
+            "period": id_period,
+        }
+        form = ClassForm(initial=initial_data)
         context["form"] = form
         return render(request, "app/home-edit.html", context=context)
 
@@ -85,4 +96,6 @@ def delete_class(request, class_id):
         return redirect('index')
     subject.delete()
     messages.success(request, "授業を削除しました。")
-    return redirect('index')
+    return redirect(reverse('index') + '?edit_mode=on')
+
+    
