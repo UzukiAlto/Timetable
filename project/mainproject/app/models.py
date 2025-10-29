@@ -29,7 +29,7 @@ class Class(models.Model):
     absence_count = models.IntegerField("欠席回数", default=0)
     total_late_and_early_leave_count = models.IntegerField("遅刻・早退回数", default=0)
     belongings = models.TextField("持ち物", blank=True, null=True)
-    examination = models.TextField("試験日程", blank=True, null=True)
+    examination = models.DateField("試験日程", blank=True, null=True)
     
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -44,7 +44,7 @@ class Class(models.Model):
 
 
 class Class_cancellation(models.Model):
-    date = models.DateTimeField("休講情報")
+    date = models.DateField("休講情報")
     class_model = models.ForeignKey(Class, on_delete=models.CASCADE, blank=True, null=True)
     
     def __str__(self):
@@ -52,7 +52,7 @@ class Class_cancellation(models.Model):
 
     
 class Homework(models.Model):
-    deadline = models.DateTimeField("締め切り")
+    deadline = models.DateField("締め切り")
     content = models.TextField("内容", blank=True)
     classModel = models.ForeignKey(Class, on_delete=models.CASCADE, blank=True, null=True)
     

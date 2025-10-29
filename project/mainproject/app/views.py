@@ -54,13 +54,22 @@ def get_class_context():
     return context
 
 def index(request):
+    # if is_editing:
+    #     return redirect(reverse('index') + '?edit_mode=on')
+    
     context = get_class_context()
     if 'edit_mode' in request.GET and request.GET['edit_mode'] == 'on':
         context['is_editing'] = True
     return render(request, "app/index.html", context=context)
 
+def index_is_editing(request):
+    
+    context = get_class_context()
+    context['is_editing'] = True
+    return render(request, "app/index.html", context=context)
+
 @login_required
-def home_edit(request, id_day_of_week, id_period):
+def home_edit(request, username, id_day_of_week, id_period):
     context = get_class_context()
     
     if request.method == "POST":

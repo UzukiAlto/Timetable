@@ -4,6 +4,7 @@ from .models import Class
 class ClassForm(forms.ModelForm):
     class Meta:
         model = Class
+        # 入力する項目を設定
         fields = [
             'class_name',
             'professor_name',
@@ -12,7 +13,6 @@ class ClassForm(forms.ModelForm):
             'period',
         ]
         widgets = {
-            # 1. テキスト入力フィールド (class_name, professor_name, classroom_name)
             # TextInputウィジェットに、Bootstrapのクラス 'form-control' を設定
             'class_name': forms.TextInput(
                 attrs={'class': 'form-control', 'placeholder': '授業名を入力'}
