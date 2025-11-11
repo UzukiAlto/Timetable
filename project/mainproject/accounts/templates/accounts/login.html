@@ -24,11 +24,11 @@
  
    <nav class="navbar bg-body-tertiary">
         <div class="container">
-            <a class="navbar-brand" href="/">ブログサイト</a>
+            <a class="navbar-brand">時間割サイト</a>
  
             <ul class="navbar-nav  flex-row gap-3">
                 {% if user.is_authenticated  %}
-                <li class="nav-item"><a class="nav-link" href="/">マイページ</a></li>
+                <!-- <li class="nav-item"><a class="nav-link" href="/">マイページ</a></li> -->
                 <li class="nav-item">
                     <form action="{% url 'logout' %}" method="post">
                         {% csrf_token %}
@@ -37,7 +37,7 @@
                 </li>
                 
                 {% else %}
-                <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">ログイン</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'signup' %}">アカウント登録</a></li>
                 {% endif %}
             </ul>
         </div>

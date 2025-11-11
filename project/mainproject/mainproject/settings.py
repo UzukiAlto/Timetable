@@ -127,11 +127,11 @@ STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
-
-LOGIN_URL = '/admin/login/'
+# ログインページのリダイレクト先URLを設定
+LOGIN_URL = '/accounts/login/'
+# ログイン後のリダイレクト先URLを設定
+LOGIN_REDIRECT_URL = '/'
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
-LOGIN_REDIRECT_URL = '/'    #リダイレクト先＃
-LOGOUT_REDIRECT_URL = '/'

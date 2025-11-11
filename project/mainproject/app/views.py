@@ -1,15 +1,18 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Class
-from django.http import HttpResponse
+# from django.http import HttpResponse
 from .forms import ClassForm
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.contrib import messages
 from django.urls import reverse
 
-def get_class_context():
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+
+def get_class_context(user):
     context = {}
-    classes = Class.objects.all()
+    classes = Class.objects.filter(author=user)
     
     day_of_the_week_list = ["月", "火", "水", "木", "金", "土"]
     # 授業を入れる配列[曜日][時限]
@@ -18,7 +21,6 @@ def get_class_context():
     exist_class_per_period_list = [False for _ in range(8)]
     exist_saturday_class = False
     max_period = 8
-    subject = classes[0]
     
     for subject in classes:
         class_list[subject.day_of_the_week][subject.period - 1] = subject
@@ -53,15 +55,19 @@ def get_class_context():
     context["period_range"] = range(1, max_period + 1)
     return context
 
+@login_required
 def index(request):
-    context = get_class_context()
+    context = get_class_context(request.user)
     if 'edit_mode' in request.GET and request.GET['edit_mode'] == 'on':
         context['is_editing'] = True
     return render(request, "app/index.html", context=context)
 
+# ログインしていないユーザーがアクセスすると
+# -> settings.LOGIN_URL にリダイレクトされます。
+
 @login_required
 def home_edit(request, id_day_of_week, id_period):
-    context = get_class_context()
+    context = get_class_context(request.user)
     
     if request.method == "POST":
         form = ClassForm(request.POST)
@@ -75,7 +81,7 @@ def home_edit(request, id_day_of_week, id_period):
             # context = get_class_context()
             # context["form"] = ClassForm()
             # context["is_editing"] = True
-            return redirect(reverse('index') + '?edit_mode=on')
+            return redirect(reverse('app:index') + '?edit_mode=on')
         
         return render(request, "app/home-edit.html", {"form": ClassForm()}, context=context)
     
@@ -93,9 +99,9 @@ def home_edit(request, id_day_of_week, id_period):
 def delete_class(request, class_id):
     subject = get_object_or_404(Class, pk=class_id)
     if subject.author != request.user:
-        return redirect('index')
+        return redirect('app:index')
     subject.delete()
     messages.success(request, "授業を削除しました。")
-    return redirect(reverse('index') + '?edit_mode=on')
+    return redirect(reverse('app:index') + '?edit_mode=on')
 
     
