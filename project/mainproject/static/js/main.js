@@ -5,9 +5,15 @@ let homeEditItems = document.querySelectorAll('.home-edit-display');
 let isEditing = document.body.dataset.isEditing === "true";
 let timetableRow = parseInt(document.body.dataset.timetableRow);
 let timetableColumn = parseInt(document.body.dataset.timetableColumn);
+
+timetableGrid.style.gridTemplateRows = `60px repeat(${timetableRow}, 1fr)`;
+timetableGrid.style.gridTemplateColumns = `repeat(${timetableColumn}, 1fr)`;
+
 if (isEditing) {
     homeEditItems.forEach((item) => {
         item.style.display = 'block';
+        timetableGrid.style.gridTemplateRows = `60px repeat(8, 1fr)`;
+        timetableGrid.style.gridTemplateColumns = `repeat(7, 1fr)`;
     });
 }
 const displayHomeEdit = () => {

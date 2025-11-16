@@ -67,9 +67,9 @@
       
 
           
-    {% for week in grid_column_range %}
+    {% for subjects in class_list %}
         
-    {% if exist_saturday_class == False and week == 5 %}
+    {% if exist_saturday_class == False and forloop.counter == 6 %}
     
     <div class="home-edit-display">
       <div class="col">
@@ -86,17 +86,17 @@
     </div>
     {% endif %}
           
-    {% for period in grid_row_range %}
+    {% for subject in subjects %}
     
     {% comment %} 授業を曜日ごとに処理 {% endcomment %}
-      {% if exist_class_per_period_list.period and class_list.week.period is not None %}
+      {% if subject.exist_class_par_week and subject.content is not None %}
         <div class="col">
           <div class="card">
             <div class="card-body">
-              <p>{{ class_list.week.period.class_name }}</p>
-              <p>{{ class_list.week.period.classroom_name }}</p>
+              <p>{{ subject.content.class_name }}</p>
+              <p>{{ subject.content.classroom_name }}</p>
               <div class="home-edit-display">
-                <form method="post" action="{% url 'delete_class' class.id %}">
+                <form method="post" action="{% url 'delete_class' subject.content.id %}">
                   {% csrf_token %}
                   <button type="submit" class="btn btn-danger mt-4 home-edit-display">削除</button>
                 </form>
@@ -104,7 +104,7 @@
             </div>
           </div>
         </div>
-      {% elif forloop.counter >= 5 %}
+      {% elif subject.exist_class_par_week %}
       <div class="col">
         <div class="card">
           <div class="card-body" style="margin:  0 auto;">
