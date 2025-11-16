@@ -11,7 +11,7 @@
     
 </head>
 
-<body {% if is_editing %} data-is-editing="true" {% endif %}>
+<body {% if is_editing %} data-is-editing="true" {% endif %} data-timetable-row="{{ timetable_row }}" data-timetable-column="{{ timetable_column }}">
   <link rel="stylesheet" href="{% static 'styles.css' %}" />
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
@@ -35,47 +35,90 @@
     </div>
   </nav>
 
-  {% if isEditing %}
-  <div class="timetable-grid m-5" style="--timetable-row: {{ timetable_row }}; --timetable-column: {{ timetable_column }}">
-
-  {% else %}
-  {% endif %}
-  <div class="timetable-grid m-5" style="--timetable-row: {{ timetable_row }}; --timetable-column: {{ timetable_column }}">
+<div class="timetable-grid m-5" style="--timetable-row: {{ timetable_row }}; --timetable-column: {{ timetable_column }}">
+  {% comment %} <div class="timetable-grid m-5"> {% endcomment %}
     <div class="col">
       <div class="card">
         <button type="button" class="btn btn-secondary" id="home-edit-button">授業編集</button>
       </div>
     </div>
-          
-    {% for period in period_range %}
+
+    
+    {% for exist_class in exist_class_per_period_list %}
+    
+        
+    {% if exist_class %}
+    <div class="col">
+      <div class="card">
+        <div class="card-body">第{{ forloop.counter }}限</div>
+      </div>
+    </div>
+    {% else %}
+    <div class="home-edit-display">
       <div class="col">
         <div class="card">
-          <div class="card-body">第{{ period }}限</div>
+          <div class="card-body">第{{ forloop.counter }}限</div>
+        </div>  
+      </div>
+    </div>
+    {% endif %}
+        
+    {% endfor %}
+      
+
+          
+    {% for week in grid_column_range %}
+        
+    {% if exist_saturday_class == False and week == 5 %}
+    
+    <div class="home-edit-display">
+      <div class="col">
+        <div class="card">
+          <div class="card-body">土曜日</div>
         </div>
       </div>
-    {% endfor %}
-
-    {% for classes in class_list %}
-        <div class="col">
-          <div class="card">
-            <div class="card-body">{% cycle "月" "火" "水" "木" "金" "土" %}曜日</div>
-          </div>
-        </div>
-    {% for class in classes %}
-      {% if class != None%}
+    </div>
+    {% else %}
+    <div class="col">
+      <div class="card">
+        <div class="card-body">{% cycle "月" "火" "水" "木" "金" "土" %}曜日</div>
+      </div>
+    </div>
+    {% endif %}
+          
+    {% for period in grid_row_range %}
+    
+    {% comment %} 授業を曜日ごとに処理 {% endcomment %}
+      {% if exist_class_per_period_list.period and class_list.week.period is not None %}
         <div class="col">
           <div class="card">
             <div class="card-body">
-              <p>{{ class.class_name }}</p>
-              <p>{{ class.classroom_name }}</p>
-              <form method="post" action="{% url 'delete_class' class.id %}">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-danger mt-4 home-edit-display">削除</button>
+              <p>{{ class_list.week.period.class_name }}</p>
+              <p>{{ class_list.week.period.classroom_name }}</p>
+              <div class="home-edit-display">
+                <form method="post" action="{% url 'delete_class' class.id %}">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-danger mt-4 home-edit-display">削除</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% elif forloop.counter >= 5 %}
+      <div class="col">
+        <div class="card">
+          <div class="card-body" style="margin:  0 auto;">
+            <div class="home-edit-display">
+              <form action="{% url 'home_edit' user.username forloop.parentloop.counter forloop.counter%}" method="get">
+                <button type="submit" class="btn btn-outline-secondary home-edit-display">+</button>
               </form>
             </div>
           </div>
         </div>
+      </div>
       {% else %}
+      <div class="home-edit-display">
+        
         <div class="col">
           <div class="card">
             <div class="card-body" style="margin:  0 auto;">
@@ -85,9 +128,12 @@
             </div>
           </div>
         </div>
+      </div>
       {% endif %}
+    
     {% endfor %}
     {% endfor %}
+
   </div>
   <div class="d-flex gap-4">
   </div>
