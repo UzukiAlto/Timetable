@@ -99,7 +99,7 @@
       {% if subject.exist_class_par_week and subject.content is not None %}
         <div class="col">
           <div class="card">
-            <div class="card-body">
+              <a class="card-body btn" href="{% url 'app:class_edit' %}">
               <p>{{ subject.content.class_name }}</p>
               <p>{{ subject.content.classroom_name }}</p>
               <div class="home-edit-display">
@@ -108,7 +108,7 @@
                   <button type="submit" class="btn btn-danger mt-4 home-edit-display">削除</button>
                 </form>
               </div>
-            </div>
+            </a>
           </div>
         </div>
       {% elif subject.exist_class_par_week %}

@@ -108,4 +108,6 @@ def delete_class(request, class_id):
     messages.success(request, "授業を削除しました。")
     return redirect(reverse('app:index') + '?edit_mode=on')
 
-    
+@login_required
+def class_edit(request):
+    return render(request, "app/class-edit.html")
