@@ -33,3 +33,8 @@
 .home-edit-display {
   display: none;
 }
+
+.btn-disabled {
+  pointer-events: none; 
+  cursor: default;  
+}

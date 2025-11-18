@@ -5,6 +5,8 @@ const timetableGrid = document.querySelector('.timetable-grid');
 // 編集ボタンを押したときに表示・非表示を切り替える要素を取得
 let homeEditItems = document.querySelectorAll('.home-edit-display');
 
+let classContentItems = document.querySelectorAll('.class-content.card-body.btn');
+
 // htmlの<body>にあるdata属性からデータを取得
 // 現在の編集モード
 let isEditing = document.body.dataset.isEditing === "true";
@@ -12,19 +14,40 @@ let isEditing = document.body.dataset.isEditing === "true";
 let timetableRow = parseInt(document.body.dataset.timetableRow);
 let timetableColumn = parseInt(document.body.dataset.timetableColumn);
 
-// 初期表示時に編集モードかどうかを判定
-if (isEditing) {
+const enableEditContents = () => {
     // 編集用の要素を表示
     homeEditItems.forEach((item) => {
         item.style.display = 'block';
     });
+    classContentItems.forEach((item) => {
+        item.classList.add('btn-disabled');
+    });
     timetableGrid.style.gridTemplateRows = `60px repeat(8, 1fr)`;
     timetableGrid.style.gridTemplateColumns = `repeat(7, 1fr)`;
-}else {
+};
+
+const disableEditContents = () => {
+    
     // 初期表示時のグリッド設定
     timetableGrid.style.gridTemplateRows = `60px repeat(${timetableRow}, 1fr)`;
     timetableGrid.style.gridTemplateColumns = `repeat(${timetableColumn}, 1fr)`;
+    
+    homeEditItems.forEach((item) => {
+        item.style.display = 'none';
+    });
+    classContentItems.forEach((item) => {
+        item.classList.remove('btn-disabled');
+    });
+};
 
+
+
+
+// 初期表示時に編集モードかどうかを判定
+if (isEditing) {
+    enableEditContents();
+}else {
+    disableEditContents();
 }
 
 // 編集ボタンがクリックされたときに要素の表示とグリッドの設定を切り替える
@@ -33,24 +56,12 @@ const displayHomeEdit = () => {
     if (isEditing == true){
         // ボタンのテキストを切り替え
         homeEditButton.textContent = "編集完了";
-        // グリッドの行・列数を編集モード用に設定
-        timetableGrid.style.gridTemplateRows = `60px repeat(8, 1fr)`;
-        timetableGrid.style.gridTemplateColumns = `repeat(7, 1fr)`;
-        // 編集用の要素を表示
-        homeEditItems.forEach((item) => {
-            item.style.display = 'block';
-        });
+        enableEditContents();
 
     } else {
         // ボタンのテキストを切り替え
         homeEditButton.textContent = "授業編集";
-        // グリッドの行・列数を通常モード用に設定
-        timetableGrid.style.gridTemplateRows = `60px repeat(${timetableRow}, 1fr)`;
-        timetableGrid.style.gridTemplateColumns = `repeat(${timetableColumn}, 1fr)`;
-        // 編集用の要素を非表示
-        homeEditItems.forEach((item) => {
-            item.style.display = 'none';
-        });
+        disableEditContents();
     }
 };
 
