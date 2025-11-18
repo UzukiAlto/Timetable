@@ -101,7 +101,11 @@
           <div class="card">
             <div class="card-body">
               <p>{{ subject.content.class_name }}</p>
+              
+              {% if subject.content.classroom_name is not None %}
               <p>{{ subject.content.classroom_name }}</p>
+              {% endif %}
+                
               <div class="home-edit-display">
                 <form method="post" action="{% url 'app:delete_class' subject.content.id %}">
                   {% csrf_token %}
