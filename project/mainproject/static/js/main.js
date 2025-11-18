@@ -41,7 +41,6 @@ const displayHomeEdit = () => {
             item.style.display = 'block';
         });
 
-        console.log("set to normal");
     } else {
         // ボタンのテキストを切り替え
         homeEditButton.textContent = "授業編集";
@@ -52,7 +51,6 @@ const displayHomeEdit = () => {
         homeEditItems.forEach((item) => {
             item.style.display = 'none';
         });
-        console.log("set to edit");
     }
 };
 

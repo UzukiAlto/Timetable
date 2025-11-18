@@ -71,13 +71,6 @@ def index(request):
         context['is_editing'] = True
     return render(request, "app/index.html", context=context)
 
-@login_required
-def index_is_editing(request):
-    
-    context = get_class_context(request.user)
-    context['is_editing'] = True
-    return render(request, "app/index.html", context=context)
-
 # ログインしていないユーザーがアクセスすると
 # -> settings.LOGIN_URL にリダイレクトされます。
 
