@@ -107,7 +107,7 @@
               {% endif %}
                 
               <div class="home-edit-display">
-                <form method="post" action="{% url 'app:delete_class' subject.content.id %}" onsubmit="return confirm('この操作は取り消せません。削除しますか？')">
+                <form method="post" action="{% url 'app:delete_class' subject.content.id forloop.parentloop.counter0  forloop.counter %}" onsubmit="return confirm('この操作は取り消せません。削除しますか？')">
                   {% csrf_token %}
                   <button type="submit" class="btn btn-danger mt-4 delete-btn">削除</button>
                 </form>

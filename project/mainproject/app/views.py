@@ -136,12 +136,22 @@ def render_home_edit(request, context, id_day_of_week, id_period):
 
 @require_POST
 @login_required
-def delete_class(request, class_id):
+def delete_class(request, class_id, id_day_of_week, id_period):
     subject = get_object_or_404(Class, pk=class_id)
     if subject.author != request.user:
         return redirect('app:index')
-    subject.delete()
-    messages.success(request, "授業を削除しました。")
+    
+    # 授業スケジュールが1つ以下の場合、授業自体を削除
+    if subject.class_schedule_set.count() <= 1: 
+        subject.delete()
+    else:
+        # 複数の時間に同じ授業が割り当てられている場合、該当の時間のみ削除
+        schedule = get_object_or_404(
+            subject.class_schedule_set,
+            day_of_the_week=id_day_of_week,
+            period=id_period
+        )
+        schedule.delete()
     return redirect(reverse('app:index') + '?edit_mode=on')
 
 @login_required

@@ -40,17 +40,16 @@ class ClassScheduleForm(forms.ModelForm):
             'day_of_the_week',
             'period',
         ]
+        labels = {
+            'class_model': '授業',
+        }
         
         widgets = {
             'class_model': forms.Select(
                 attrs={'class': 'form-select'} 
             ),
-            'day_of_the_week': forms.Select(
-                attrs={'class': 'form-select'}
-            ),
-            'period': forms.Select(
-                attrs={'class': 'form-select'}
-            ),
+            'day_of_the_week': forms.HiddenInput(),
+            'period': forms.HiddenInput(),
         }
         
     # フォームの初期化

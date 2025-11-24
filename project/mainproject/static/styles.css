@@ -42,3 +42,28 @@
 .delete-btn {
   pointer-events: auto;
 }
+
+/* 1. 通常時（選ばれていないとき）のタブ */
+.nav-tabs .nav-link {
+    background-color: #f8f9fa; /* 薄いグレー */
+    color: #6c757d;           /* 文字はグレー */
+    border: 1px solid #dee2e6;
+    margin-right: 4px;        /* タブ同士を少し離す */
+}
+
+/* 2. マウスが乗ったとき */
+.nav-tabs .nav-link:hover {
+    background-color: #e9ecef; /* 少し濃いグレー */
+    border-color: #dee2e6;
+}
+
+/* 3. 選ばれている（active）とき */
+.nav-tabs .nav-link.active {
+    background-color: #0d6efd; /* 青色（BootstrapのPrimary色） */
+    color: white;              /* 文字を白に */
+    border-color: #0d6efd;     /* 枠線も青に */
+}
+.hide-content {
+  display: none;
+
+}
