@@ -1,6 +1,6 @@
 from django import forms
 from .models import Class
-from .models import Class_schedule
+from .models import Class_schedule, Homework, Memo
 
 class ClassForm(forms.ModelForm):
     # selected_class = forms.ModelChoiceField()
@@ -31,7 +31,16 @@ class ClassForm(forms.ModelForm):
     
         # 必須を一時的に解除
         self.fields['class_name'].required = False
-        
+
+class ClassNameForm(forms.ModelForm):
+    class Meta:
+        model = Class
+        fields = [
+            'class_name',
+            'professor_name',
+            'classroom_name',
+        ]
+
 class ClassScheduleForm(forms.ModelForm):
     class Meta:
         model = Class_schedule
@@ -62,3 +71,33 @@ class ClassScheduleForm(forms.ModelForm):
             self.fields['class_model'].queryset = Class.objects.filter(author=user)
             # 必須を一時的に解除
             self.fields['class_model'].required = False
+            
+            
+class HomeworkForm(forms.ModelForm):
+    class Meta:
+        model = Homework
+        fields = [
+            'deadline',
+            'content',
+        ]
+        
+        widgets = {
+            'deadline': forms.DateInput(
+                attrs={'class': 'form-control', 'type': 'date'}
+            ),
+            'content': forms.Textarea(
+                attrs={'class': 'form-control', 'placeholder': '宿題の内容を入力'}
+            ),
+        }
+        
+class MemoForm(forms.ModelForm):
+    class Meta:
+        model = Memo
+        fields = [
+            'content',
+        ]        
+        widgets = {
+            'content': forms.Textarea(
+                attrs={'class': 'form-control', 'placeholder': 'メモの内容を入力'}
+            ),
+        }

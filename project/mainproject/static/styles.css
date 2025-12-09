@@ -67,3 +67,15 @@
   display: none;
 
 }
+
+.class-edit-form {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s ease-out;
+}
+.class-edit-form.is-open {
+  grid-template-rows: 1fr;
+}
+.class-edit-form-content {
+  overflow: hidden;
+}

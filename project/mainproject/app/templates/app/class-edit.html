@@ -5,15 +5,96 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="..." crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="{% static 'styles.css' %}" />
 
-    <title>class-edit-test</title>
+    <title>class-edit</title>
 </head>
-<body>
-    <div class="m-3">
-        <h2>class-edit</h2>
-        <p>クラス名:{{ subject.class_name }}</p>
-        <p>教室名:{{ subject.classroom_name }}</p>   
+<body class="m-3 px-4">
+    <button type="button" class="btn btn-outline-secondary mb-3" onclick="history.back()">
+        戻る
+    </button>
+    <div class="mt-3">
+        <p>{{ subject.class_name }}</p>
+        <p>{{ subject.classroom_name }}</p>   
+        <p>{{ subject.professor_name }}</p>
     </div>
+    <div class="mt-5">
+        <div class="align-items-center" style="display: flex;">
+            <h3 class="mb-0">宿題</h3>
+            <button type="button" id="btn-add-homework" class="btn btn-link btn-lg text-decoration-none text-primary">+</button>
+        </div>
+        <div id="homework-form" class="class-edit-form mt-3">
+            <div class="class-edit-form-content">
+                <form class="mb-3" method = "post">
+        
+                    {% csrf_token %}
+                    {{ homework_form.as_p }}
+                    <button class="btn btn-dark mt-3" type="submit" name="submit-homework-form">追加</button>
+                    
+                </form>
+            </div>
+        </div>
+        {% for homework in homeworks %}
+            <div class="card">
+                <div class="card-body" style="display: flex;">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" value="">
+                    </div>
+                    <p class="card-text">
+                        締め切り: {{ homework.deadline }} <br>
+                        内容: {{ homework.content }}
+                    </p>
+                </div>
+            </div>
+        {% endfor %}
+        
+        <div class="align-items-center" style="display: flex;">
+            <h3 class="mb-0">メモ</h3>
+            <button type="button" id="btn-add-memo" class="btn btn-link btn-lg text-decoration-none text-primary">+</button>
+        </div>
+        <div id="memo-form" class="class-edit-form mt-3">
+            <div class="class-edit-form-content">
+                <form class="mb-3" method = "post">
+        
+                    {% csrf_token %}
+                    {{ memo_form.as_p }}
+                    <button class="btn btn-dark mt-3" type="submit" name="submit-memo-form">追加</button>
+                    
+                </form>
+            </div>
+        </div>
+        {% for memo in memos %}
+        <div class="card" id="memo-{{memo.item.pk}}">
+            <div class="card-body">
+                <div style="display: flex; justify-content: space-between;">
+                    <button type="button" class="btn btn-outline-secondary mb-3 btn-edit-memo" id="edit-memo-{{memo.item.pk}}" onclick="toggleEditMemo('{{ memo.item.pk }}')">
+                        <i class="bi bi-pencil"></i>
+                        <i class="bi bi-arrow-counterclockwise hide-content"></i>
+                    </button>
+                    <button type="button" class="btn btn-outline-danger mb-3 btn-delete-memo" id="delete-memo-{{memo.item.pk}}" onclick="deleteMemo('{{memo.item.pk}}')">
+                        <i class="bi bi-x"></i>
+                    </button>
+
+                </div>
+                <p class="card-text" id="memo-{{memo.item.pk}}-text">
+                    {{ memo.item.content|linebreaksbr }} <br>
+                </p>
+                
+                <form class="mb-3 form-edit-memo hide-content" method = "post" id="edit-form-memo-{{memo.item.pk}}" onsubmit="updateMemo(event, '{{ memo.item.pk }}')">
+                    {% csrf_token %}
+                    {{ memo.form.as_p }}
+                    <button class="btn btn-dark mt-3" type="submit">変更</button>
+                    
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+            
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="..." crossorigin="anonymous"></script>
+    <script src="{% static 'js/class-edit.js' %}"></script>
+
 </body>
 </html>

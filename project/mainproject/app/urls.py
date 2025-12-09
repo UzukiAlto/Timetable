@@ -8,4 +8,6 @@ urlpatterns = [
     path("add_class/<str:username>/<int:id_day_of_week>/<int:id_period>/", views.home_edit, name="home_edit"),
     path("delete/<int:class_id>/<int:id_day_of_week>/<int:id_period>/", views.delete_class, name="delete_class"),
     path("class_edit/<int:class_id>/", views.class_edit, name="class_edit"),
+    path("update/memo/<int:memo_id>/", views.update_memo, name="update_memo"),
+    path("delete/memo/", views.delete_memo, name="delete_memo"),
 ]

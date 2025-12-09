@@ -50,6 +50,7 @@ class Class_schedule(models.Model):
 
 class Class_cancellation(models.Model):
     date = models.DateField("休講情報")
+    created_at = models.DateTimeField("作成日時", auto_now_add=True)
     class_model = models.ForeignKey(Class, on_delete=models.CASCADE, blank=True, null=True)
     
     def __str__(self):
@@ -58,8 +59,9 @@ class Class_cancellation(models.Model):
     
 class Homework(models.Model):
     deadline = models.DateField("締め切り")
+    created_at = models.DateTimeField("作成日時", auto_now_add=True)
     content = models.TextField("内容", blank=True)
-    classModel = models.ForeignKey(Class, on_delete=models.CASCADE, blank=True, null=True)
+    class_model = models.ForeignKey(Class, on_delete=models.CASCADE, blank=True, null=True)
     
     def __str__(self):
         return self.content[:20]  # 先頭の20文字を表示
@@ -67,7 +69,7 @@ class Homework(models.Model):
     
 class Memo(models.Model):
     content = models.TextField("内容", blank=True)
-    # image = models.ImageField("画像", upload_to='memo_images/', blank=True, null=True)
+    created_at = models.DateTimeField("作成日時", auto_now_add=True)
     class_model = models.ForeignKey(Class, on_delete=models.CASCADE,  blank=True, null=True)
     
     def __str__(self):
