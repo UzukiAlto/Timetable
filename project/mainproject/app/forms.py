@@ -32,14 +32,25 @@ class ClassForm(forms.ModelForm):
         # 必須を一時的に解除
         self.fields['class_name'].required = False
 
-class ClassNameForm(forms.ModelForm):
+class ClassBasicInfoForm(forms.ModelForm):
     class Meta:
         model = Class
         fields = [
             'class_name',
-            'professor_name',
             'classroom_name',
+            'professor_name',
         ]
+        widgets = {
+            'class_name': forms.TextInput(
+                attrs={'class': 'form-control'}
+            ),
+            'classroom_name': forms.TextInput(
+                attrs={'class': 'form-control'}
+            ),
+            'professor_name': forms.TextInput(
+                attrs={'class': 'form-control'}
+            ),
+        }
 
 class ClassScheduleForm(forms.ModelForm):
     class Meta:

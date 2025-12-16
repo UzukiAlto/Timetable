@@ -3,7 +3,7 @@ from django.http import JsonResponse
 import json
 from .models import Class, Homework, Memo, Class_cancellation
 # from django.http import HttpResponse
-from .forms import ClassForm, ClassScheduleForm, HomeworkForm, MemoForm
+from .forms import ClassForm, ClassBasicInfoForm, ClassScheduleForm, HomeworkForm, MemoForm
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.contrib import messages
@@ -164,6 +164,7 @@ def class_edit(request, class_id):
     if request.method == "POST":
         homework_form = HomeworkForm(request.POST)
         memo_form = MemoForm(request.POST)
+        
         if 'submit-homework-form' in request.POST and homework_form.is_valid():
             new_homework = homework_form.save(commit=False)
             new_homework.class_model = subject
@@ -178,29 +179,63 @@ def class_edit(request, class_id):
         return redirect('app:class_edit', class_id=class_id)
             
     if request.method == "GET":
-        homeworks = subject.homework_set.all().order_by('deadline')
+        homework_items = subject.homework_set.all().order_by('deadline')
         memo_items = subject.memo_set.all().order_by('-created_at')
+        
+        # 授業名、教室名、教授名編集用フォーム
+        class_basic_info_form = ClassBasicInfoForm(instance=subject)
         memos = []
         for memo_item in memo_items:
             memos.append({"item": memo_item, "form": MemoForm(initial={"content": memo_item.content})})
-            
+        
+        homeworks = []
+        for homework_item in homework_items:
+            homeworks.append({"item": homework_item, "form": HomeworkForm(initial={
+                "deadline": homework_item.deadline,
+                "content": homework_item.content,
+            })})
         homework_form = HomeworkForm()
         memo_add_form = MemoForm()
+        
         context = {
             "subject": subject,
             "homeworks": homeworks,
             "memos": memos,
+            "class_basic_info_form": class_basic_info_form,
             "homework_form": homework_form,
             "memo_form": memo_add_form,
             }
         return render(request, "app/class-edit.html", context=context)
+    
+def update_class_basic_info(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            subject = get_object_or_404(Class, pk=data.get('id'))
+            
+            subject.class_name = data.get('class_name')
+            subject.professor_name = data.get('professor_name')
+            subject.classroom_name = data.get('classroom_name')
+            subject.save()
+            print("Class basic info updated successfully")
+            # htmlではなくjsonを返す
+            return JsonResponse({
+                'status': 'success', 
+                'new_subject': {
+                    'class_name': subject.class_name,
+                    'classroom_name': subject.classroom_name,
+                    'professor_name': subject.professor_name
+                }
+            })
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
 
-def update_memo(request, memo_id):
+def update_memo(request):
     if request.method == "POST":
         try:
             data = json.loads(request.body)
             
-            memo = get_object_or_404(Memo, pk=memo_id)
+            memo = get_object_or_404(Memo, pk=data.get('id'))
             
             memo.content = data.get('content')
             memo.save()
@@ -214,7 +249,6 @@ def update_memo(request, memo_id):
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
 
 def delete_memo(request):
-    # memo = get_object_or_404(Memo, pk=memo_id)
     if request.method == "POST":
         try:
             data = json.loads(request.body)
@@ -224,6 +258,45 @@ def delete_memo(request):
                 return JsonResponse({'status': 'error', 'message': 'Unauthorized'}, status=403)
             
             memo.delete()
+            return JsonResponse({'status': 'success'})
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+def update_homework(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            
+            homework = get_object_or_404(Homework, pk=data.get('id'))
+            homework.deadline = data.get('deadline')
+            homework.content = data.get('content')
+            homework.save()
+            
+            deadline_input = data.get('deadline').split('-')
+            deadline_formatted_JP = f"{deadline_input[0]}年{deadline_input[1]}月{deadline_input[2]}日"
+            
+            # htmlではなくjsonを返す
+            return JsonResponse({
+                'status': 'success', 
+                'new_deadline': deadline_formatted_JP,
+                'new_content': homework.content
+            })
+
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+    
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
+
+def delete_homework(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            homework_id = data.get('id')
+            homework = get_object_or_404(Homework, pk=homework_id)
+            if homework.class_model.author != request.user:
+                return JsonResponse({'status': 'error', 'message': 'Unauthorized'}, status=403)
+            
+            homework.delete()
             return JsonResponse({'status': 'success'})
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)}, status=500)

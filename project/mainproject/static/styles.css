@@ -64,7 +64,7 @@
     border-color: #0d6efd;     /* 枠線も青に */
 }
 .hide-content {
-  display: none;
+  display: none !important;
 
 }
 
