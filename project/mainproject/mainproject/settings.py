@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "app.apps.AppConfig",
     "accounts.apps.AccountsConfig",
+    "display_homework.apps.DisplayHomeworkConfig",
 ]
 
 MIDDLEWARE = [
