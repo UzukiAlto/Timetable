@@ -221,11 +221,9 @@ def update_class_basic_info(request):
             # htmlではなくjsonを返す
             return JsonResponse({
                 'status': 'success', 
-                'new_subject': {
-                    'class_name': subject.class_name,
-                    'classroom_name': subject.classroom_name,
-                    'professor_name': subject.professor_name
-                }
+                'new_class_name': subject.class_name,
+                'new_classroom_name': subject.classroom_name,
+                'new_professor_name': subject.professor_name
             })
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
@@ -252,7 +250,7 @@ def delete_memo(request):
     if request.method == "POST":
         try:
             data = json.loads(request.body)
-            memo_id = data.get('memo_id')
+            memo_id = data.get('id')
             memo = get_object_or_404(Memo, pk=memo_id)
             if memo.class_model.author != request.user:
                 return JsonResponse({'status': 'error', 'message': 'Unauthorized'}, status=403)

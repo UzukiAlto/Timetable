@@ -1,211 +1,191 @@
+/** 要素を更新する関数の引数として渡すクラス */
+class ElementUpdateParams{
+    /**
+     * @param {Object} param - 引数をまとめたもの
+     * @param {SubmitEvent} param.event - フォームの送信イベント
+     * @param {string} param.elementType - 要素の種類（例：homework, memo）
+     * @param {number} param.id - 要素のID
+     * @param {string[]} param.contents - 更新する内容の配列(例：['deadline', 'content'] )
+     */
+    constructor({event, elementType, id, contents}){
+        /** @type {SubmitEvent} */
+        this.event = event;
+        /** @type {string} */
+        this.elementType = elementType;
+        /** @type {number} */
+        this.id = id;
+        /** @type {string[]} */
+        this.contents = contents;
+    }
+}
 
-const homeworkForm = document.getElementById('homework-form');
+/** 要素を削除する関数の引数として渡すクラス */
+class ElementDeleteParams{
+    /**
+     * @param {Object} param - 引数をまとめたもの
+     * @param {string} param.elementType - 要素の種類（例：homework, memo）
+     * @param {number} param.id - 要素のID
+     */
+    constructor({elementType, id}){
+        /** @type {string} */
+        this.elementType = elementType;
+        /** @type {number} */
+        this.id = id;
+    }
+}
+
+/** 要素の種類としてクラスに入れる */
+const elementTypes = Object.freeze({
+    classBasicInfo: 'class-basic-info',
+    homework: 'homework',
+    memo: 'memo',
+})
+
 const buttonHomeworkForm = document.getElementById('btn-add-homework');
-const memoForm = document.getElementById('memo-form');
 const buttonMemoForm = document.getElementById('btn-add-memo');
 
-const buttonEditMemo = document.querySelectorAll('.btn-edit-memo');
-const buttonDeleteMemo = document.querySelectorAll('.btn-delete-memo');
 
 // CSRFトークンの取得
 const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
 
 buttonHomeworkForm.addEventListener('click', () => {
+    const homeworkForm = document.getElementById('homework-form');
     homeworkForm.classList.toggle('is-open');
     buttonHomeworkForm.textContent = homeworkForm.classList.contains('is-open') ? '-' : '+';
 })
 
 buttonMemoForm.addEventListener('click', () => {
+    const memoForm = document.getElementById('memo-form');
     memoForm.classList.toggle('is-open');
     buttonMemoForm.textContent = memoForm.classList.contains('is-open') ? '-' : '+';
 })
 
-function toggleEditClassBasicInfo(classId) {
-    const button =  document.getElementById(`edit-class-basic-info-${classId}`);
-    const hideElements = [
-        document.getElementById(`class-basic-info`),
-        document.getElementById(`edit-form-class-basic-info-${classId}`),
-        button.querySelector('.bi-pencil'),
-        button.querySelector('.bi-arrow-counterclockwise')
-    ];
-    hideElements.forEach(element => {
-        element.classList.toggle('hide-content');
-    });
-}
 
-async function updateClassBasicInfo(event, classId) {
+/** @param {ElementUpdateParams} elementUpdateParams */
+async function updateData(elementUpdateParams) {
+    if(!(elementUpdateParams instanceof ElementUpdateParams)){
+        console.error(elementUpdateParams + "は想定外のデータ型です。");
+        return
+    }
+
     // フォーム送信をキャンセルして割り込む
-    event.preventDefault();
-
-    const formElement = document.getElementById(`edit-form-class-basic-info-${classId}`);
+    elementUpdateParams.event.preventDefault();
+    const formElement = document.getElementById(`edit-form-${elementUpdateParams.elementType}-${elementUpdateParams.id}`);
     const formData = new FormData(formElement);
-    const className = formData.get('class_name');
-    const classroomName = formData.get('classroom_name');
-    const professorName = formData.get('professor_name');
-    
-    try {
-        const response = await fetch('/update/class_basic_info/', {
+    // jsonとして送るデータ
+    const body = { id: elementUpdateParams.id };
+    elementUpdateParams.contents.forEach((content) => {
+        body[content] = formData.get(content);
+    });
+
+    try{
+        const response = await fetch(`/update/${elementUpdateParams.elementType.split('-').join('_')}/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRFToken': csrfToken,
             }, 
             // データをjson化
-            body: JSON.stringify({
-                id: classId,
-                class_name: className,
-                classroom_name: classroomName,
-                professor_name: professorName,
-            })
+            body: JSON.stringify(body)
         });
         const data = await response.json();
         if (data.status === 'success') {
-            document.getElementById('class-name').innerText = data.new_subject.class_name;
-            document.getElementById('classroom-name').innerText = data.new_subject.classroom_name;
-            document.getElementById('professor-name').innerText = data.new_subject.professor_name;
+            elementUpdateParams.contents.forEach((content) => {
+                document.getElementById(`${elementUpdateParams.elementType.split('_').join('-')}-${elementUpdateParams.id}-${content.split('_').join('-')}`).innerText = data[`new_${content}`];
+            });
 
-            toggleEditClassBasicInfo(classId);
+            toggleEditClass(elementUpdateParams.elementType, elementUpdateParams.id);
         } else {
             alert('Error:'+ data.message);
         }
+    } catch(error) {
+        console.error('Error:', error);
+    }
+}
+
+/** @param {ElementDeleteParams} elementDeleteParams */
+async function deleteData(elementDeleteParams) {
+    // 画面に確認ダイアログを表示
+    const confirmResult = confirm('この操作は取り消せません。削除しますか？');
+    if (!confirmResult) return;
+
+    try{
+        const response = await fetch(`/delete/${elementDeleteParams.elementType.split('-').join('_')}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
+            },
+            body: JSON.stringify({ id: elementDeleteParams.id })
+        });
+        const data = await response.json();
+        if (data.status === 'success') {
+            const container = document.getElementById(`${elementDeleteParams.elementType}-${elementDeleteParams.id}`);
+            container.classList.add('hide-content');
+        } else {
+            alert('Error:' + data.message);
+        }
+
     } catch (error) {
         console.error('Error:', error);
     }
 
 }
 
-function toggleEditClass(targetClassName) {
-    document.querySelectorAll(`.js-display-${targetClassName}`).forEach(element => {
+async function updateClassBasicInfo(event, classId) {
+    const classBasicInfoParam = new ElementUpdateParams({
+        event: event,
+        elementType: elementTypes.classBasicInfo,
+        id: classId,
+        contents: ['class_name', 'classroom_name', 'professor_name']
+    })
+    updateData(classBasicInfoParam);
+}
+
+/**
+ * 編集時にフォーム等の表示を切り替える関数
+ * @param {string} elementType 
+ * @param {number} elementId 
+ */
+function toggleEditClass(elementType, elementId) {
+    document.querySelectorAll(`.js-display-${elementType}-${elementId}`).forEach(element => {
         element.classList.toggle('hide-content');
     });
 }
 
 function updateMemo(event, memoId) {
-    // フォーム送信をキャンセルして割り込む
-    event.preventDefault();
-
-    const formElement = document.getElementById(`edit-form-memo-${memoId}`);
-
-    const formData = new FormData(formElement);
-    const content = formData.get('content');
-
-    fetch('/update/memo/', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': csrfToken,
-        },
-        // データをjson化
-        body: JSON.stringify({
-            id: memoId, 
-            content: content
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 'success') {
-            const memoText = document.getElementById(`memo-${memoId}-text`);
-            memoText.innerText = data.new_content;
-
-            toggleEditClass("memo-"+memoId);
-        } else {
-            alert('Error:', data.message);
-        }
-    })
-    .catch((error) => {
-        console.error('Error:', error);
+    const memoUpdateParams = new ElementUpdateParams({
+        event: event,
+        elementType: elementTypes.memo,
+        id: memoId,
+        contents: ["content"]
     });
+    updateData(memoUpdateParams);
 }
 
 function deleteMemo(memoId) {
-    // 画面に確認ダイアログを表示
-    const confirmResult = confirm('この操作は取り消せません。削除しますか？');
-    if (!confirmResult) return;
-    fetch('/delete/memo/', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': csrfToken,
-        },
-        body: JSON.stringify({ memo_id: memoId})
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 'success') {
-            const memoContainer = document.getElementById(`memo-${memoId}`);
-            memoContainer.classList.add('hide-content');
-        } else {
-            alert('Error:' + data.message);
-        }
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    })
-
+    const memoDeleteParam = new ElementDeleteParams({
+        elementType: elementTypes.memo,
+        id: memoId
+    });
+    deleteData(memoDeleteParam);
 }
 
 async function updateHomework(event, homeworkId) {
-    // フォーム送信をキャンセルして割り込む
-    event.preventDefault();
-    const formElement = document.getElementById(`edit-form-homework-${homeworkId}`);
-
-    const formData = new FormData(formElement);
-    const deadline = formData.get('deadline');
-    const content = formData.get('content');
-
-    try {
-        const response = await fetch('/update/homework/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': csrfToken,
-            },
-            // データをjson化
-            body: JSON.stringify({
-                id: homeworkId, 
-                deadline: deadline, 
-                content: content
-            })
-        });
-        const jsonData = await response.json();
-        if (jsonData.status === 'success') {
-            document.getElementById(`homework-${homeworkId}-deadline`).innerText = `${jsonData.new_deadline}`;
-            document.getElementById(`homework-${homeworkId}-content`).innerText = `${jsonData.new_content}`;
-
-            toggleEditClass(`homework-${homeworkId}`);
-        }else {
-            alert('Error:' + data.message);
-        }
-    } catch (error) {
-        console.error('Error:', error);
-    }
+    const homeworkUpdateParam = new ElementUpdateParams({
+        event: event,
+        elementType: elementTypes.homework,
+        id: homeworkId,
+        contents: ['deadline', 'content']
+    });
+    updateData(homeworkUpdateParam);
 }
 
 async function deleteHomework(homeworkId) {
-    // 画面に確認ダイアログを表示
-    const confirmResult = confirm('この操作は取り消せません。削除しますか？');
-    if (!confirmResult) return;
-
-    try {
-        const response = await fetch('/delete/homework/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': csrfToken,
-            },
-            body: JSON.stringify({ id: homeworkId})
-        });
-    
-        const jsonData = await response.json();
-    
-        if (jsonData.status === 'success') {
-            const homeworkContainer = document.getElementById(`homework-${homeworkId}`);
-            homeworkContainer.classList.add('hide-content');
-        } else {
-            alert('Error:' + jsonData.message);
-        }
-    } catch (error) {
-        console.error('Error:', error);
-    }
+    const homeworkDeleteParam = new ElementDeleteParams({
+        elementType: elementTypes.homework,
+        id: homeworkId
+    })
+    deleteData(homeworkDeleteParam);
 }
