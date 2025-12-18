@@ -21,7 +21,22 @@
     width: 14.285714285714285714285714285714%;
   }
 }
+
+.container {
+  width: 90%;     
+  max-width: 1000px;    
+  margin: 0 auto; 
+}
+
+.card {
+  box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.4);
+}
+
 .timetable-grid {
+  width: 90%;     
+  max-width: 1000px;    
+  margin: 0 auto;   
+
   display: grid;
   grid-auto-flow: column;
   grid-template-rows: 60px repeat(var(--timetable-row), 1fr);

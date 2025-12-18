@@ -17,7 +17,7 @@
 
     {% include "app/includes/global-menu.html" %}
 
-  <div class="timetable-grid m-5">
+  <div class="timetable-grid">
     <div class="col">
       <div class="card">
         <button type="button" class="btn btn-secondary" id="home-edit-button">授業編集</button>
@@ -83,7 +83,7 @@
               <div class="home-edit-display">
                 <form method="post" action="{% url 'app:delete_class' subject.content.id forloop.parentloop.counter0  forloop.counter %}" onsubmit="return confirm('この操作は取り消せません。削除しますか？')">
                   {% csrf_token %}
-                  <button type="submit" class="btn btn-danger mt-4 delete-btn">削除</button>
+                  <button type="submit" class="btn btn-danger delete-btn">削除</button>
                 </form>
               </div>
             </a>
