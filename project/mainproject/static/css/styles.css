@@ -94,3 +94,15 @@
 .class-edit-form-content {
   overflow: hidden;
 }
+.homework-finished {
+  text-decoration: line-through;
+  color: gray; 
+}
+
+.form-check-input{
+  background-color: rgba(59, 130, 246, 0.1);
+  width: 1.1em;
+  height: 1.1em;
+  border: 1px solid #3b82f6;
+  transition: all 0.2s ease;
+}

@@ -189,3 +189,30 @@ async function deleteHomework(homeworkId) {
     })
     deleteData(homeworkDeleteParam);
 }
+
+async function finish_homework(homeworkId) {
+    try{
+        const checkbox = document.getElementById(`homework-${homeworkId}-checkbox`);
+        const response = await fetch('/update/homework/finish/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
+            }, 
+            // データをjson化
+            body: JSON.stringify({ 
+                id: homeworkId,
+                is_finished: checkbox.checked
+            })
+        });
+        const data = await response.json();
+        if (data.status === 'success'){
+            const homeworkContent = document.querySelector(`#homework-${homeworkId} .card-text`);
+            homeworkContent.classList.toggle('homework-finished', data.is_finished);
+        } else {
+            alert('Error:'+ data.message);
+        }
+    }catch (error) {
+        console.error('Error:', error);
+    }
+}

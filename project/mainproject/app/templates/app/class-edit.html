@@ -81,12 +81,12 @@
     
                         <div class="d-flex js-display-homework-{{homework.item.pk}}">
                             <div class="form-check">
-                                <input type="checkbox" class="form-check-input" value="">
+                                <input type="checkbox" class="form-check-input" id="homework-{{ homework.item.pk }}-checkbox" value="" {% if homework.item.is_finished %} checked {% endif %} onclick="finish_homework('{{homework.item.pk}}')">
                             </div>
-                            <p class="card-text">
+                            <label class="card-text {% if homework.item.is_finished %}homework-finished{% endif %}" for="homework-{{ homework.item.pk }}-checkbox">
                                 締め切り: <span id="homework-{{ homework.item.pk }}-deadline">{{ homework.item.deadline|date:"Y年m月d日" }}</span><br>
                                 内容: <span id="homework-{{ homework.item.pk }}-content"> {{ homework.item.content|linebreaksbr  }}</span>
-                            </p>
+                            </label>
                         </div>
                         <form class="mb-3 form-edit-homework js-display-homework-{{homework.item.pk}} hide-content" method="post" id="edit-form-homework-{{homework.item.pk}}" onsubmit="updateHomework(event, '{{ homework.item.pk }}')">
                             {% csrf_token %}

@@ -179,7 +179,7 @@ def class_edit(request, class_id):
         return redirect('app:class_edit', class_id=class_id)
             
     if request.method == "GET":
-        homework_items = subject.homework_set.all().order_by('deadline')
+        homework_items = subject.homework_set.all().order_by('is_finished', 'deadline')
         memo_items = subject.memo_set.all().order_by('-created_at')
         
         # 授業名、教室名、教授名編集用フォーム
@@ -284,6 +284,22 @@ def update_homework(request):
             return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
     
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
+
+def finish_homework(request):
+    print("finish_homework called")
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            print(f"finish homework data received: {data}")
+            
+            homework = get_object_or_404(Homework, pk=data.get('id'))
+            homework.is_finished = data.get('is_finished')
+            homework.save()
+            
+            # htmlではなくjsonを返す
+            return JsonResponse({'status': 'success', 'is_finished': homework.is_finished})
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
 
 def delete_homework(request):
     if request.method == "POST":
