@@ -58,6 +58,7 @@ class Class_cancellation(models.Model):
 
     
 class Homework(models.Model):
+    is_finished = models.BooleanField("完了済み", default=False)
     deadline = models.DateField("締め切り")
     created_at = models.DateTimeField("作成日時", auto_now_add=True)
     content = models.TextField("内容", blank=True)
