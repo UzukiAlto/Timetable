@@ -54,6 +54,7 @@ buttonHomeworkForm.addEventListener('click', () => {
     const formContent = homeworkForm.querySelector('.class-edit-form-content');
     buttonHomeworkForm.classList.toggle('rotate');
 
+    // formを開けるときは余白を追加してから開き、閉じるときは閉じてから余白を削除
     if(homeworkForm.classList.contains('is-open')){
         buttonHomeworkForm.addEventListener('transitionend', () => {
             formContent.classList.remove('form-padding');
@@ -91,7 +92,7 @@ async function updateData(elementUpdateParams) {
 
     // フォーム送信をキャンセルして割り込む
     elementUpdateParams.event.preventDefault();
-    const formElement = document.getElementById(`edit-form-${elementUpdateParams.elementType}-${elementUpdateParams.id}`);
+    const formElement = elementUpdateParams.event.currentTarget;
     const formData = new FormData(formElement);
     // jsonとして送るデータ
     const body = { id: elementUpdateParams.id };
@@ -160,7 +161,7 @@ async function updateClassBasicInfo(event, classId) {
         id: classId,
         contents: ['class_name', 'classroom_name', 'professor_name']
     })
-    updateData(classBasicInfoParam);
+    await updateData(classBasicInfoParam);
 }
 
 /**
@@ -174,14 +175,14 @@ function toggleEditClass(elementType, elementId) {
     });
 }
 
-function updateMemo(event, memoId) {
+async function updateMemo(event, memoId) {
     const memoUpdateParams = new ElementUpdateParams({
         event: event,
         elementType: elementTypes.memo,
         id: memoId,
         contents: ["content"]
     });
-    updateData(memoUpdateParams);
+    await updateData(memoUpdateParams);
 }
 
 function deleteMemo(memoId) {
@@ -199,7 +200,7 @@ async function updateHomework(event, homeworkId) {
         id: homeworkId,
         contents: ['deadline', 'content']
     });
-    updateData(homeworkUpdateParam);
+    await updateData(homeworkUpdateParam);
 }
 
 async function deleteHomework(homeworkId) {
