@@ -18,7 +18,6 @@
     {% include "app/includes/global-menu.html" %}
 
     <main class="container">
-        <!-- Ajax通信用のCSRFトークン -->
         <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
 
         {% regroup homeworks by deadline as deadline_list %}
@@ -42,56 +41,6 @@
         {% endfor %}
 
     </main>
-
-    <script>
-        function toggleComplete(element) {
-            const homeworkId = element.dataset.id;
-            const currentStatus = element.dataset.isFinished === 'true';
-            const newStatus = !currentStatus;
-            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-
-            // サーバーへ更新リクエストを送信
-            fetch("{% url 'app:finish_homework' %}", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': csrfToken
-                },
-                body: JSON.stringify({
-                    id: homeworkId,
-                    is_finished: newStatus
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    // 成功したら見た目とデータ属性を更新
-                    if (data.is_finished) {
-                        element.classList.add('completed');
-                        element.dataset.isFinished = 'true';
-                        // 完了したらリストの最後に移動
-                        element.parentNode.appendChild(element);
-                    } else {
-                        element.classList.remove('completed');
-                        element.dataset.isFinished = 'false';
-                        // 未完了に戻ったらリストの先頭に移動
-                        element.parentNode.prepend(element);
-                    }
-                } else {
-                    console.error('Error:', data.message);
-                }
-            })
-            .catch(error => console.error('Error:', error));
-        }
-
-        // 完了済みフィルター機能
-        document.getElementById('toggle-completed').addEventListener('change', function() {
-            if (this.checked) {
-                document.body.classList.remove('hide-completed');
-            } else {
-                document.body.classList.add('hide-completed');
-            }
-        });
-    </script>
+    <script src="{% static 'js/display-homework.js' %}"></script>
 </body>
 </html>
