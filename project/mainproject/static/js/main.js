@@ -1,13 +1,7 @@
+// カスタムプロパティ編集用のルート要素
+const rootElement = document.documentElement;
 // 編集ボタンを取得
 const homeEditButton = document.getElementById('home-edit-button');
-// 時間割グリッドの要素を取得
-const timetableGrid = document.querySelector('.timetable-grid');
-// 編集ボタンを押したときに表示・非表示を切り替える要素を取得
-const homeEditItems = document.querySelectorAll('.home-edit-display');
-const timeFlameTexts = document.querySelectorAll('.time-frame-text');
-
-const classContentItems = document.querySelectorAll('.class-content.card-body.btn');
-const disabledCard = document.querySelectorAll('.disabled-card');
 
 // htmlの<body>にあるdata属性からデータを取得
 // 現在の編集モード
@@ -18,43 +12,18 @@ const timetableRowMax = 8;
 let timetableColumn = parseInt(document.body.dataset.timetableColumn);
 const timetableColumnMax = 7;
 
+rootElement.style.setProperty('--template-rows-count', timetableRow);
+rootElement.style.setProperty('--template-columns-count', timetableColumn);
+
 // 編集用の要素を表示
 const enableEditContents = () => {
-    homeEditItems.forEach((item) => {
-        item.style.display = 'block';
-    });
-    timeFlameTexts.forEach((item) => {
-        item.classList.add('hide-content');
-    });
-    classContentItems.forEach((item) => {
-        item.classList.add('btn-disabled');
-    });
-    disabledCard.forEach((item) => {
-        item.classList.remove('disabled-card');
-    });
-    timetableGrid.style.gridTemplateRows = `50px repeat(${timetableRowMax}, 1fr)`;
-    timetableGrid.style.gridTemplateColumns = `repeat(${timetableColumnMax}, 1fr)`;
+    document.body.classList.add('edit-mode');
 };
 
 // 編集用の要素を非表示
 const disableEditContents = () => {
     
-    // 初期表示時のグリッド設定
-    timetableGrid.style.gridTemplateRows = `50px repeat(${timetableRow}, 1fr)`;
-    timetableGrid.style.gridTemplateColumns = `repeat(${timetableColumn}, 1fr)`;
-    
-    homeEditItems.forEach((item) => {
-        item.style.display = 'none';
-    });
-    timeFlameTexts.forEach((item) => {
-        item.classList.remove('hide-content');
-    });
-    classContentItems.forEach((item) => {
-        item.classList.remove('btn-disabled');
-    });
-    disabledCard.forEach((item) => {
-        item.classList.add('disabled-card');
-    })
+    document.body.classList.remove('edit-mode');
 };
 
 
@@ -72,12 +41,12 @@ const displayHomeEdit = () => {
     isEditing = !isEditing;
     if (isEditing == true){
         // ボタンのテキストを切り替え
-        homeEditButton.textContent = "編集完了";
+        homeEditButton.textContent = "完了";
         enableEditContents();
 
     } else {
         // ボタンのテキストを切り替え
-        homeEditButton.textContent = "授業編集";
+        homeEditButton.textContent = "編集";
         disableEditContents();
     }
 };

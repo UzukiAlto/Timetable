@@ -1,11 +1,9 @@
 .navbar {
     background-color: var(--header-bg);
-    /* 影をつけて浮き上がり感を出す */
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); 
     box-sizing: border-box;
     padding: 10px 40px;
 }
-/* ブランドロゴ（サイト名） */
 .navbar .navbar-brand {
     color: white;
     font-weight: 700;
@@ -17,30 +15,26 @@
     cursor: default;
 }
 
-/* リンク全体の基本設定 */
 .navbar .nav-link {
     color: rgba(255, 255, 255, 0.85);
-    font-size: 0.9rem; /* 元のサイズに戻しました */
-    font-weight: 500;
-    padding: 0 0.8rem; /* 余白を少し小さく調整しました */
-    transition: all 0.3s ease; /* 滑らかな変化 */
-    border-radius: 6px; /* 角丸も少し控えめに */
-    position: relative; /* アニメーション用 */
+    font-size: 0.9rem; 
+    padding: 0 0.8rem; 
+    transition: all 0.3s ease; 
+    border-radius: 6px; 
+    position: relative; 
 }
 
 .navbar .menu-link {
-    margin: 5px 2px; /* 横の間隔も少し詰めました */
-    max-width: 120px; /* 最大幅を設定して均一に */
+    margin: 5px 2px; 
+    max-width: 120px; 
 }
 
-/* ホバー時の背景変化と文字色 */
 .navbar .menu-link:hover {
     color: #fff;
-    background-color: rgba(255, 255, 255, 0.1); /* 半透明の白を重ねる */
-    transform: translateY(-2px); /* 少しだけ浮き上がる */
+    background-color: rgba(255, 255, 255, 0.1); 
+    transform: translateY(-2px);
 }
 
-/* 下線アニメーションの準備 */
 .navbar .menu-link::after {
     content: '';
     position: absolute;
@@ -50,16 +44,14 @@
     height: 2px;
     background-color: var(--accent-color);
     transition: all 0.3s ease;
-    transform: translateX(-50%); /* 中央配置 */
+    transform: translateX(-50%); 
 }
 
-/* ホバー時に下線が伸びる */
 .navbar .menu-link:hover::after {
     width: 80%;
 }
 
 
-/* --- 右側のユーザー情報・ログアウトボタン --- */
 .navbar .nav-link.disable {
     color: var(--text-sub);
     font-size: 0.9rem;
@@ -67,11 +59,10 @@
     cursor: default;
 }
 
-/* ログアウトボタンをボタンらしく見せる */
 .btn-logout {
     color: #fff !important;
     border: 1px solid rgba(255, 255, 255, 0.3);
-    padding: 0.4rem 1rem !important; /* ボタンの余白も少し小さく調整 */
+    padding: 0.4rem 1rem !important; 
     margin-left: 10px;
     border-radius: 20px !important;
     font-size: 0.85rem !important;
@@ -85,24 +76,22 @@
     text-decoration: none;
 }
 
-/* ログイン・新規登録ボタン */
 .btn-auth {
     background-color: var(--accent-color);
     color: white !important;
-    padding: 0.4rem 1rem !important; /* ボタンの余白も少し小さく調整 */
+    padding: 0.4rem 1rem !important; 
     border-radius: 6px !important;
     margin-left: 10px;
     transition: background 0.3s;
 }
 .btn-auth:hover {
-    background-color: #2980b9; /* --accent-hover の直接指定（安全策） */
+    background-color: #2980b9; 
     transform: translateY(-1px);
 }
 
-/* ハンバーガーメニューのアイコン色調整 */
 .navbar-toggler {
     border-color: rgba(255,255,255,0.1);
-    font-size: 0.9rem; /* ハンバーガーメニューも少し控えめに */
+    font-size: 0.9rem; 
 }
 .navbar-toggler:focus {
     box-shadow: none;

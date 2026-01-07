@@ -1,41 +1,43 @@
-<nav class="navbar navbar-expand-lg">
-    <a class="navbar-brand">
-        <i class="bi bi-calendar-check"></i> サブ割くん
-    </a>
-    
-    <button class="navbar-toggler navbar-dark" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon navbar-dark"></span>
-    </button>
-    
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav me-auto">
-            <li class="nav-item">
-                <a class="nav-link menu-link" href="{% url 'display_homework:display_homework' %}">
-                    <i class="bi bi-list-task"></i> 課題一覧
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link menu-link" href="{% url 'app:index' %}">
-                    <i class="bi bi-journal-text"></i> 授業一覧
-                </a>
-            </li>
-        </ul>
+<header>
+    <nav class="navbar navbar-expand-lg">
+        <a class="navbar-brand" href="{% url 'app:index' %}">
+            <i class="bi bi-calendar-check" ></i> サブ割くん
+        </a>
         
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
-            {% if user.is_authenticated %}
+        <button class="navbar-toggler navbar-dark" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon navbar-dark"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <span class="nav-link disable">こんにちは, <span style="color: white; font-weight: bold;">{{ user.username }}</span> さん</span>
+                    <a class="nav-link menu-link" href="{% url 'display_homework:display_homework' %}">
+                        <i class="bi bi-list-task"></i> 課題一覧
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <form action="{% url 'logout' %}" method="post" class="d-inline">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-link nav-link btn-logout">ログアウト</button>
-                    </form>
+                    <a class="nav-link menu-link" href="{% url 'app:index' %}">
+                        <i class="bi bi-journal-text"></i> 授業一覧
+                    </a>
                 </li>
-            {% else %}
-                <li class="nav-item"><a class="nav-link btn-auth" href="{% url 'login' %}">ログイン</a></li>
-                <li class="nav-item"><a class="nav-link btn-auth" href="{% url 'signup' %}">新規登録</a></li>
-            {% endif %}
-        </ul>
-    </div>
-</nav>
+            </ul>
+            
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <span class="nav-link disable">こんにちは, <span style="color: white; font-weight: bold;">{{ user.username }}</span> さん</span>
+                    </li>
+                    <li class="nav-item">
+                        <form action="{% url 'logout' %}" method="post" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-link nav-link btn-logout">ログアウト</button>
+                        </form>
+                    </li>
+                {% else %}
+                    <li class="nav-item"><a class="nav-link btn-auth" href="{% url 'login' %}">ログイン</a></li>
+                    <li class="nav-item"><a class="nav-link btn-auth" href="{% url 'signup' %}">新規登録</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+</header>

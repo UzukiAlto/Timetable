@@ -8,13 +8,13 @@
     color: var(--text-sub);
     margin-bottom: 10px;
     padding-left: 10px;
-    border-left: 4px solid var(--accent-color); /* 左に青いライン */
+    border-left: 4px solid var(--accent-color);
     display: flex;
     align-items: center;
 }
 
 .date-header.overdue {
-    color: #e74c3c; /* 赤色 */
+    color: #e74c3c;
     border-left-color: #e74c3c;
 }
 

@@ -16,7 +16,7 @@
 <body>
     {% include "app/includes/global-menu.html" %}
 
-    <div class="container">
+    <main class="container">
         
         <a class="btn btn-outline-secondary mb-3" href="{% url 'app:index' %}?edit_mode=on">
             <i class="bi bi-arrow-left"></i>戻る
@@ -58,7 +58,7 @@
             </div>
         </div>
     
-    </div>
+    </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" xintegrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="{% static 'js/homeEdit.js' %}"></script>
