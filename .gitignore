@@ -16,6 +16,9 @@ ENV/
 *.ini
 *.cfg
 *.config
+# Env
+.env
+.env.*
 
 # VSCode
 .vscode/settings.json
