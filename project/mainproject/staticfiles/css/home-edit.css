@@ -1,0 +1,84 @@
+:root {
+    --fade-time: 0.15s;
+}
+
+.nav-tabs {
+    border-bottom: none; 
+    margin-bottom: 0 !important; 
+    padding-left: 20px;
+}
+
+.nav-tabs .nav-link {
+    border: none;
+    color: var(--text-sub);
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    transition: all var(--fade-time);
+}
+
+.nav-tabs .nav-link:hover {
+    color: var(--accent-color);
+    background-color: rgba(52, 152, 219, 0.1);
+}
+
+.nav-tabs .nav-link.active {
+    background-color: var(--card-bg);
+    color: var(--accent-color);
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.05); 
+}
+
+.edit-card {
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 30px;
+    box-shadow: var(--shadow-sm);
+}
+.tab-item {
+    display: none;
+    transition: opacity var(--fade-time) ease;
+}
+.tab-item.active {
+    display: block;
+}
+.tab-item.fading-out {
+    opacity: 0; 
+}
+.form-control, .form-select {
+    border-radius: 4px;
+    border: 1px solid #ced4da;
+    padding: 10px;
+    margin-bottom: 15px;
+}
+.form-control:focus, .form-select:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+}
+.form-select option {
+    background-color: #fff;
+    color: var(--text-main);
+    padding: 10px 0; 
+    font-size: 1rem; 
+}
+
+.btn-submit {
+    background-color: var(--header-bg);
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 12px;
+    font-weight: bold;
+    border-radius: var(--border-radius);
+    transition: background-color 0.3s;
+}
+.btn-submit:hover {
+    background-color: #2c3e50;
+    color: white;
+}
+
+@media screen and (max-width: 768px) {
+    .nav-tabs .nav-link{
+        padding: 5px 10px;
+        font-size: 0.9rem;
+    }
+}

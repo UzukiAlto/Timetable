@@ -1,0 +1,138 @@
+.deadline-group {
+    margin-bottom: 2rem;
+}
+
+.date-header {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: var(--text-sub);
+    margin-bottom: 10px;
+    padding-left: 10px;
+    border-left: 4px solid var(--accent-color);
+    display: flex;
+    align-items: center;
+}
+
+.date-header.overdue {
+    color: #e74c3c;
+    border-left-color: #e74c3c;
+}
+
+.task-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.task-item {
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 15px 20px;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.task-item:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+.check-circle {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid #bdc3c7;
+    margin-right: 15px;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.task-item:hover .check-circle {
+    border-color: var(--accent-color);
+}
+
+.task-content {
+    flex-grow: 1;
+}
+
+.task-title {
+    display: block;
+    font-weight: bold;
+    font-size: 1rem;
+    color: var(--text-main);
+    margin-bottom: 4px;
+}
+
+.subject-tag {
+    display: inline-flex;
+    align-items: center;
+    background: #dfe6e9;
+    color: var(--text-main);
+    font-size: 0.75rem;
+    padding: 3px 10px;
+    border-radius: 4px; 
+    font-weight: bold;
+}
+
+.task-item.completed {
+    opacity: 0.6;
+    background-color: #f2f2f2;
+    box-shadow: none;
+}
+
+.task-item.completed .check-circle {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+}
+
+.task-item.completed .check-circle::after {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 3px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.task-item.completed .task-title {
+    text-decoration: line-through;
+    color: #95a5a6;
+}
+
+.header-controls {
+    position: absolute;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.filter-switch {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.filter-switch input {
+    margin-right: 6px;
+    cursor: pointer;
+}
+
+body.hide-completed .task-item.completed {
+    display: none !important;
+}

@@ -1,0 +1,98 @@
+.navbar {
+    background-color: var(--header-bg);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); 
+    box-sizing: border-box;
+    padding: 10px 40px;
+}
+.navbar .navbar-brand {
+    color: white;
+    font-weight: 700;
+    font-size: 1.2rem; 
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    gap: 10px; 
+    cursor: default;
+}
+
+.navbar .nav-link {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.9rem; 
+    padding: 0 0.8rem; 
+    transition: all 0.3s ease; 
+    border-radius: 6px; 
+    position: relative; 
+}
+
+.navbar .menu-link {
+    margin: 5px 2px; 
+    max-width: 120px; 
+}
+
+.navbar .menu-link:hover {
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.1); 
+    transform: translateY(-2px);
+}
+
+.navbar .menu-link::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: var(--accent-color);
+    transition: all 0.3s ease;
+    transform: translateX(-50%); 
+}
+
+.navbar .menu-link:hover::after {
+    width: 80%;
+}
+
+
+.navbar .nav-link.disable {
+    color: var(--text-sub);
+    font-size: 0.9rem;
+    pointer-events: none;
+    cursor: default;
+}
+
+.btn-logout {
+    color: #fff !important;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 0.4rem 1rem !important; 
+    margin-left: 10px;
+    border-radius: 20px !important;
+    font-size: 0.85rem !important;
+    transition: all 0.3s ease;
+}
+
+.btn-logout:hover {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    color: white !important;
+    text-decoration: none;
+}
+
+.btn-auth {
+    background-color: var(--accent-color);
+    color: white !important;
+    padding: 0.4rem 1rem !important; 
+    border-radius: 6px !important;
+    margin-left: 10px;
+    transition: background 0.3s;
+}
+.btn-auth:hover {
+    background-color: #2980b9; 
+    transform: translateY(-1px);
+}
+
+.navbar-toggler {
+    border-color: rgba(255,255,255,0.1);
+    font-size: 0.9rem; 
+}
+.navbar-toggler:focus {
+    box-shadow: none;
+}

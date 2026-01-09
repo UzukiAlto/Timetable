@@ -1,0 +1,105 @@
+:root {
+    --bg-color: #f0f2f5;      
+    --header-bg: #34495e;     
+    --card-bg: #ffffff;       
+    --text-main: #2c3e50;     
+    --text-sub: #7f8c8d;      
+    --accent-color: #3498db;  
+    --border-radius: 8px;     
+    --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+    --shadow-hover: 0 5px 15px rgba(0,0,0,0.1);
+    
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Helvetica Neue", "Hiragino Kaku Gothic ProN", "Hiragino Sans", Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 30px 20px 60px;
+}
+
+h1 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+}
+p {
+    margin-bottom: 1rem;
+}
+
+
+.hide-content {
+    display: none !important;
+}
+
+.add-item-button {
+    display: inline-block;
+    font-size: 1.5rem;
+    transition: transform 0.1s ease-out;
+}
+.rotate .add-item-button {
+    transform: rotate(45deg);
+}
+
+.bi {
+    vertical-align: middle;
+}
+
+.card-body {
+    padding: 1.25rem;
+}
+
+.btn-link {
+    color: var(--accent-color);
+    font-weight: bold;
+}
+.btn-link:hover {
+    color: #2980b9;
+}
+
+.mb-5 {
+    margin-bottom: 2rem !important;
+}
+
+label {
+    font-weight: bold;
+    color: var(--text-main);
+    margin-bottom: 5px;
+    display: block;
+}
+
+.color-radio-grid {
+    display: grid;
+    width: 50%;
+    gap: 5px;
+    grid-template-columns: repeat(4, 1fr);
+}
+.color-option input[type="radio"]{
+    display: none;
+}
+
+.color-option label {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #dddddd;
+    text-indent: -9999px;
+    margin: 5px;
+}
+
+.color-option input[type="radio"]:checked + label {
+    border: 3px solid #333333;
+    transform: scale(1.1);
+}
+
