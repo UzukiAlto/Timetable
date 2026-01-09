@@ -1,4 +1,9 @@
-# (アプリ名)
+# SyncSchedule
+
+## 開発者
+
+[![Uzuki Alto](https://img.shields.io/badge/Uzuki_Alto-121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/uzukialto)  
+[![kete113](https://img.shields.io/badge/kete113-121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/kete113)
 
 ## 概要
 
@@ -29,7 +34,7 @@ https://your-app-url.com
 
 ## なぜ作ったのか
 
-本アプリは、大学のサークル活動の一環としてdjangoやweb開発の学習用に作成したものです。  
+本アプリは、大学のサークル活動の一環としてdjangoやweb開発の学習用に二人のチームで作成したものです。  
 現在使用している時間割アプリに同一の授業を複数のコマに配置する機能が無かったため、題材を時間割アプリに決定しました。
 
 ## こだわったポイント
@@ -41,8 +46,11 @@ https://your-app-url.com
 ## 苦労した点
 
 * **Uzuki Alto**
-  * **学習面:** djangoとcssはほぼ何も知らない状態からのスタートだったので、アプリの作成と平行しての学習が大変でした。djangoは[このサイト](https://str1ng-blog.vercel.app/)を参考にしました。
-  * **レスポンシブ対応:** 授業一覧画面をスマートフォンの縦画面で見たときに縦に引き伸ばされてしまい、視認性と操作性のバランスが難しかったです。
+  * djangoとcssはほぼ何も知らない状態からのスタートだったので、アプリの作成と平行しての学習が大変でした。djangoは[このサイト](https://str1ng-blog.vercel.app/)を参考にしました。
+  * 授業一覧画面をスマートフォンの縦画面で見たときに縦に引き伸ばされてしまい、視認性と操作性のバランスが難しかったです。
+* **kete113**
+  * いちからの取り組みであったため、具体的な事が右も左もわからず、制作にあまり貢献できなかったです。
+  * 今回一連の流れを掴むことができたのでこの経験を次に活かしたいです。
 
 ## 今後の展望
 
@@ -53,8 +61,3 @@ https://your-app-url.com
   * 出席日数、欠席日数、遅刻回数の管理
 * 修正したいこと
   * 課題一覧へのアクセスの悪さ
-
-## 開発者
-
-[![Uzuki Alto](https://img.shields.io/badge/Uzuki_Alto-121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/uzukialto)  
-[![kete113](https://img.shields.io/badge/kete113-121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/kete113)

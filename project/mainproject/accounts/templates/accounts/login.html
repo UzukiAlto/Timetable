@@ -13,7 +13,7 @@
 
     <div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
        <div class="card shadow p-4 rounded" style="width: 100%; max-width: 400px;">
-             <h2>ログイン</h2>
+             <h2>ログイン | SyncSchedule</h2>
             <form method="post" >
                 {% csrf_token %}
                 {{ form.as_p }}
@@ -24,15 +24,14 @@
  
    <nav class="navbar bg-body-tertiary">
         <div class="container">
-            <a class="navbar-brand">時間割サイト</a>
+            <a class="navbar-brand" href="{% url 'app:index' %}">SyncSchedule</a>
  
             <ul class="navbar-nav  flex-row gap-3">
                 {% if user.is_authenticated  %}
-                <!-- <li class="nav-item"><a class="nav-link" href="/">マイページ</a></li> -->
                 <li class="nav-item">
                     <form action="{% url 'logout' %}" method="post">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-link nav-link">ログアウト</button>
+                        <button type="submit" class="btn btn-link nav-link">ログアウト | SyncSchedule</button>
                     </form>
                 </li>
                 
