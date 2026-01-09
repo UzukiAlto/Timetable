@@ -13,9 +13,9 @@ services:
     region: oregon
     buildCommand: |
       pip install -r requirements.txt
-      python manage.py migrate
-      python manage.py collectstatic --noinput
-    startCommand: gunicorn mainproject.wsgi:application
+      python project/mainproject/manage.py migrate
+      python project/mainproject/manage.py collectstatic --noinput
+    startCommand: gunicorn --chdir project/mainproject mainproject.wsgi:application
     autoDeploy: true
     envVars:
       - key: SECRET_KEY
