@@ -7,9 +7,12 @@ urlpatterns = [
     path("login/", LoginView.as_view( 
         template_name="accounts/login.html"
     ), name="login"), 
+
+    path('google-login/', views.google_login, name='google_login'),
  
     path("logout/", LogoutView.as_view(
         next_page="login"
     ), name="logout"),
     path("signup/", views.signup, name="signup")
 ]
+
