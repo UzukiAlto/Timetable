@@ -147,3 +147,9 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
+
+# Googleログインのポップアップが通信できるようにする設定
+SECURE_CROSS_ORIGIN_OPENER_POLICY = 'same-origin-allow-popups'
+
+SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
+

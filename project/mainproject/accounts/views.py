@@ -1,9 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
-
-from django.shortcuts import render, redirect
-from django.contrib.auth import login
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -36,8 +33,9 @@ def google_login(request):
         
         try:
             # Googleのトークンを検証
-            # 時計のズレを許容するためにclock_skew_in_secondsを指定することもありますが、通常はデフォルトで動作します
-            idinfo = id_token.verify_oauth2_token(token, requests.Request(), CLIENT_ID)
+            # clock_skew_in_seconds=10 を追加して、PCの時刻が多少ずれていても許容するようにします
+            idinfo = id_token.verify_oauth2_token(
+                token, requests.Request(), CLIENT_ID, clock_skew_in_seconds=10)
 
             # 検証成功。ユーザー情報を取得
             email = idinfo['email']
@@ -52,8 +50,9 @@ def google_login(request):
             
             return JsonResponse({'status': 'success'})
             
-        except ValueError:
+        except ValueError as e:
             # トークンが無効な場合
+            print(f"Google token verification error: {e}")  # エラー内容をコンソールに出力
             return JsonResponse({'status': 'error', 'message': 'Invalid token'}, status=400)
             
     return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=405)
