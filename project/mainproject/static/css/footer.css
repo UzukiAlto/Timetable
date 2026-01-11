@@ -1,0 +1,14 @@
+footer {
+    display: none;
+}
+
+footer .navbar{
+    justify-content: center;
+}
+
+
+@media screen and (max-width: 768px) {
+    footer{
+        display: block;
+    }
+}

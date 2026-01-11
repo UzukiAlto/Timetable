@@ -1,0 +1,19 @@
+<footer>
+    <nav class="navbar">
+        {% if user.is_authenticated %}
+        <div class="nav-item">
+            <a class="nav-link menu-link" href="{% url 'display_homework:display_homework' %}">
+                <i class="bi bi-list-task"></i> 課題一覧
+            </a>
+        </div>
+        <div class="nav-item">
+            <a class="nav-link menu-link" href="{% url 'app:index' %}">
+                <i class="bi bi-journal-text"></i> 授業一覧
+            </a>
+        </div>
+        {% else %}
+        <div class="nav-item nav-auth"><a class="nav-link btn-auth" href="{% url 'login' %}">ログイン</a></div>
+        <div class="nav-item nav-auth"><a class="nav-link btn-auth" href="{% url 'signup' %}">新規登録</a></div>
+        {% endif %}
+    </nav>
+</footer>

@@ -8,9 +8,9 @@
             <span class="navbar-toggler-icon navbar-dark"></span>
         </button>
         
-        {% if user.is_authenticated %}
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto">
+            {% if user.is_authenticated %}
+            <ul class="navbar-nav me-auto navbar-menu-link">
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="{% url 'display_homework:display_homework' %}">
                         <i class="bi bi-list-task"></i> 課題一覧
@@ -22,7 +22,7 @@
                     </a>
                 </li>
             </ul>
-        {% endif %}
+            {% endif %}
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
                 {% if user.is_authenticated %}
                     <li class="nav-item">
@@ -35,8 +35,8 @@
                         </form>
                     </li>
                 {% else %}
-                    <li class="nav-item"><a class="nav-link btn-auth" href="{% url 'login' %}">ログイン</a></li>
-                    <li class="nav-item"><a class="nav-link btn-auth" href="{% url 'signup' %}">新規登録</a></li>
+                    <li class="nav-item nav-auth"><a class="nav-link btn-auth" href="{% url 'login' %}">ログイン</a></li>
+                    <li class="nav-item nav-auth"><a class="nav-link btn-auth" href="{% url 'signup' %}">新規登録</a></li>
                 {% endif %}
             </ul>
         </div>

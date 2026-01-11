@@ -12,12 +12,18 @@
 }
 
 body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
     margin: 0;
     padding: 0;
     font-family: "Helvetica Neue", "Hiragino Kaku Gothic ProN", "Hiragino Sans", Arial, sans-serif;
     background-color: var(--bg-color);
     color: var(--text-main);
     line-height: 1.6;
+}
+main {
+    flex: 1;
 }
 
 .container {
