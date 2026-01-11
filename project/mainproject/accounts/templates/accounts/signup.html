@@ -34,6 +34,50 @@
 
         <button type="submit" class="btn btn-primary w-100">登録する</button>
       </form>
+      
+        <hr class="my-4">
+        
+        <!-- Googleログインボタン -->
+        <div class="g_id_signin"
+          data-type="standard"
+          data-size="large"
+          data-theme="outline"
+          data-text="sign_in_with"
+          data-shape="rectangular"
+          data-logo_alignment="left"> 
+        </div>
     </div>
+    
+      <!-- 新しいGoogleログインボタンの設定 -->
+      <div id="g_id_onload"
+        data-client_id="845944346746-uvhtfg0gosl5e352ckh4et9vrp2k94lg.apps.googleusercontent.com"
+        data-callback="handleCredentialResponse"
+        data-auto_prompt="false">
+      </div>
   </main>
 {% endblock content %}
+
+
+{% block extra_js %}
+
+<script>
+    function handleCredentialResponse(response) {
+        // 新しいライブラリでは response.credential にIDトークンが入っています
+        var id_token = response.credential;
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '{% url "google_login" %}');
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                window.location.href = '{% url "app:index" %}';
+            } else {
+                console.log('Login failed: ' + xhr.responseText);
+            }
+        };
+        xhr.send('idtoken=' + encodeURIComponent(id_token));
+    }   
+</script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+{% endblock extra_js %}
+    

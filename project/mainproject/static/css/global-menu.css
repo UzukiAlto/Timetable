@@ -105,4 +105,7 @@
     header .navbar .nav-auth {
         display: none;
     }
+    header .accounts-page{
+        display: none;
+    }
 }
